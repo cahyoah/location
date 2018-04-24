@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CheckIn Lokasi</string>
+    <string name="text_cannot_empty">Harus Diisi</string>
+    <string name="text_kontributor">Kontributor</string>
+    <string name="text_location_name">Nama Lokasi</string>
+    <string name="text_note">Keterangan</string>
+    <string name="text_latitude">Latitude</string>
+    <string name="text_latitude_location">Your Location Latitude</string>
+    <string name="text_longitude">Longitude</string>
+    <string name="text_longitude_location">Your Location Longitude</string>
+    <string name="text_save">Simpan</string>
+    <string name="text_set_location">Set Lokasi</string>
+</resources>
