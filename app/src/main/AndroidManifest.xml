@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,17 +22,17 @@
         </activity>
 
         <service
-            android:name=".LocationPresenter"
+            android:name=".presenter.LocationPresenter"
             android:enabled="true"
             android:exported="true" />
 
         <receiver
-            android:name=".MyReceiver"
+            android:name=".receiver.LocationReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".LocationService"
+            android:name=".service.LocationService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

@@ -1,4 +1,4 @@
-package com.example.asus.checkinlokasi;
+package com.example.asus.checkinlokasi.presenter;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,6 +16,9 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+
+
+import com.example.asus.checkinlokasi.ui.LocationView;
 
 import java.util.Timer;
 import java.util.TimerTask;

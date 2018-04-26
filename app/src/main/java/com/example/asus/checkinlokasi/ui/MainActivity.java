@@ -1,4 +1,4 @@
-package com.example.asus.checkinlokasi;
+package com.example.asus.checkinlokasi.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,11 +17,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.asus.checkinlokasi.receiver.LocationReceiver;
+import com.example.asus.checkinlokasi.R;
+import com.example.asus.checkinlokasi.presenter.LocationPresenter;
+import com.example.asus.checkinlokasi.service.LocationService;
 import com.example.asus.checkinlokasi.util.ShowAlert;
 
 import java.util.Timer;
 
-public class MainActivity extends AppCompatActivity implements LocationView,LocationServiceView, View.OnClickListener, MyReceiver.PeriodicCheckLocation {
+public class MainActivity extends AppCompatActivity implements LocationView, View.OnClickListener, LocationReceiver.PeriodicCheckLocation {
 
     private EditText etLocationName, etNote, etKontributor;
     private Button btnSave, btnSetLocation;
@@ -32,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements LocationView,Loca
     private Intent intent;
     private Timer timer;
 
-    private MyReceiver mBroadcast;
+    private LocationReceiver mBroadcast;
 
 
     @Override
@@ -68,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements LocationView,Loca
     }
 
     public void registerReceiver() {
-        mBroadcast = new MyReceiver(this);
+        mBroadcast = new LocationReceiver(this);
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        filter.addAction(MyReceiver.TAG);
+        filter.addAction(LocationReceiver.TAG);
         registerReceiver(mBroadcast, filter);
     }
 
@@ -174,15 +178,4 @@ public class MainActivity extends AppCompatActivity implements LocationView,Loca
 
     }
 
-    @Override
-    public void onDisabledGPSFromService(String internet_and_gps_not_available) {
-        ShowAlert.showToast(this, internet_and_gps_not_available);
-    }
-
-    @Override
-    public void onSuccessGetLocationFromService(Location location) {
-        if(location != null){
-            tvLongitudeLatitude.setText(Double.toString(location.getLongitude()) +", "+ Double.toString(location.getLatitude()) );
-        }
-    }
 }

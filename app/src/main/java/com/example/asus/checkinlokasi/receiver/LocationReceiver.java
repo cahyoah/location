@@ -1,16 +1,16 @@
-package com.example.asus.checkinlokasi;
+package com.example.asus.checkinlokasi.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class MyReceiver extends BroadcastReceiver {
+public class LocationReceiver extends BroadcastReceiver {
 
-    public static final String TAG = MyReceiver.class.getSimpleName();
+    public static final String TAG = LocationReceiver.class.getSimpleName();
 
     private final PeriodicCheckLocation mListener;
 
-    public MyReceiver(PeriodicCheckLocation listener) {
+    public LocationReceiver(PeriodicCheckLocation listener) {
         mListener = listener;
     }
 

@@ -1,11 +1,8 @@
-package com.example.asus.checkinlokasi;
+package com.example.asus.checkinlokasi.service;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,11 +13,9 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.example.asus.checkinlokasi.receiver.LocationReceiver;
 
 public class LocationService extends Service {
     private LocationListener listener;
@@ -40,7 +35,7 @@ public class LocationService extends Service {
             public void onLocationChanged(Location location) {
                 Log.d("run", "run location");
                 Intent i = new Intent("location");
-                i.setAction(MyReceiver.TAG);
+                i.setAction(LocationReceiver.TAG);
                 i.putExtra("location", location.getLongitude() + " " + location.getLatitude());
                 sendBroadcast(i);
             }
