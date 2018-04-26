@@ -6,6 +6,7 @@
     <string name="text_note">Keterangan</string>
     <string name="text_latitude">Latitude</string>
     <string name="text_latitude_location">Your Location Latitude</string>
+    <string name="text_loading">Silahkan tunggu beberapa saat.....</string>
     <string name="text_longitude">Longitude</string>
     <string name="text_longitude_location">Your Location Longitude</string>
     <string name="text_save">Simpan</string>

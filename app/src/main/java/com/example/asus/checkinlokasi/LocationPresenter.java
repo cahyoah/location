@@ -7,27 +7,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-class LocationPresenter extends Service implements LocationListener {
-    private final Context mContext;
+public class LocationPresenter implements LocationListener {
+    private Context mContext;
+
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -58,6 +55,7 @@ class LocationPresenter extends Service implements LocationListener {
         this.locationView = locationView;
 
     }
+
 
     public void getLocation() {
         try {
@@ -126,10 +124,10 @@ class LocationPresenter extends Service implements LocationListener {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }if (location != null){
+            locationView.onSuccessGetLocation(location);
         }
-        locationView.onSuccessGetLocation(location);
     }
-
 
     /**
      * Function to show settings alert dialog
@@ -180,8 +178,5 @@ class LocationPresenter extends Service implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
+
 }

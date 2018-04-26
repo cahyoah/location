@@ -1,19 +1,27 @@
 package com.example.asus.checkinlokasi;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements LocationView, View.OnClickListener {
+import com.example.asus.checkinlokasi.util.ShowAlert;
+
+import java.util.Timer;
+
+public class MainActivity extends AppCompatActivity implements LocationView,LocationServiceView, View.OnClickListener, MyReceiver.PeriodicCheckLocation {
 
     private EditText etLocationName, etNote, etKontributor;
     private Button btnSave, btnSetLocation;
@@ -21,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements LocationView, Vie
     private LocationPresenter locationPresenter;
     private AlertDialog alert;
     private AlertDialog.Builder builder;
+    private Intent intent;
+    private Timer timer;
+
+    private MyReceiver mBroadcast;
 
 
     @Override
@@ -35,6 +47,49 @@ public class MainActivity extends AppCompatActivity implements LocationView, Vie
         tvLongitudeLatitude = findViewById(R.id.tv_longitude_latitude);
         initView();
         initPresenter();
+        initService();
+        registerReceiver();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver();
+        if (intent != null){
+            stopService(intent);
+        }
+        timer.cancel();
+
+    }
+
+    public void registerReceiver() {
+        mBroadcast = new MyReceiver(this);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(MyReceiver.TAG);
+        registerReceiver(mBroadcast, filter);
+    }
+
+    private void unregisterReceiver() {
+        try {
+            if (mBroadcast != null) {
+                unregisterReceiver(mBroadcast);
+            }
+        } catch (Exception e) {
+            Log.i("", "broadcastReceiver is already unregistered");
+            mBroadcast = null;
+        }
+
+    }
+
+    private void initService() {
+
+        intent = new Intent(this, LocationService.class);
+        startService(intent);
     }
 
     private void initView() {
@@ -79,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements LocationView, Vie
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-               // TesMinatActivity.super.onBackPressed();
             }
         });
 
@@ -109,6 +163,26 @@ public class MainActivity extends AppCompatActivity implements LocationView, Vie
             }else {
 
             }
+        }
+    }
+
+    @Override
+    public void handleFromReceiver(String location) {
+        if(location != null){
+            tvLongitudeLatitude.setText(location);
+        }
+
+    }
+
+    @Override
+    public void onDisabledGPSFromService(String internet_and_gps_not_available) {
+        ShowAlert.showToast(this, internet_and_gps_not_available);
+    }
+
+    @Override
+    public void onSuccessGetLocationFromService(Location location) {
+        if(location != null){
+            tvLongitudeLatitude.setText(Double.toString(location.getLongitude()) +", "+ Double.toString(location.getLatitude()) );
         }
     }
 }
