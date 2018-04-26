@@ -1,92 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
-    <RelativeLayout
+    tools:context="wkwkw.asek.tesqiscus.MainActivity">
+
+    <FrameLayout
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="#c5c5c5">
-                <EditText
-                    android:id="@+id/et_location_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/text_location_name"
-                    android:inputType="text"
-                    android:paddingBottom="10dp"
-                    android:textColor="@android:color/black" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="#c5c5c5">
-                <EditText
-                    android:id="@+id/et_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/text_note"
-                    android:inputType="text"
-                    android:paddingBottom="10dp"
-                    android:textColor="@android:color/black"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="#c5c5c5">
-                <EditText
-                    android:id="@+id/et_kontributor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/text_kontributor"
-                    android:inputType="text"
-                    android:paddingBottom="10dp"
-                    android:textColor="@android:color/black"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_set_location"
-                android:text="@string/text_set_location"
-                android:textColor="@android:color/white"
-                android:background="@color/colorPrimary"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tv_longitude_latitude"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_latitude"
-                android:layout_margin="5dp"
-                android:textColor="@android:color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/frame_container">
+    </FrameLayout>
 
 
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_save"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
-            android:text="@string/text_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
-
-
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>
