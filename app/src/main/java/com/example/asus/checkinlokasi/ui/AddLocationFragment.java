@@ -79,6 +79,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
         if (intent != null){
             getActivity().stopService(intent);
         }
+        timer.cancel();
 
     }
 
@@ -160,7 +161,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_set_location){
-           locationPresenter.getLocation();
+            locationPresenter.getLocation();
         }
         if(v.getId() == R.id.btn_save){
             String locationName = etLocationName.getText().toString().trim();
