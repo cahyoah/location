@@ -21,9 +21,6 @@ import retrofit2.http.Path;
 public interface Api {
 
 
-    @GET("episode/showallepisode")
-    Call<JsonObject> showAllEpisode() ;
-
     @POST("service/location.php")
     @FormUrlEncoded
     Call<JsonObject> postLocation(@Field("episode_name") String episodeName,
@@ -32,22 +29,5 @@ public interface Api {
                                   @Field("longitude") String longitude,
                                   @Field("latitude") String latitude,
                                   @Field("aksi") String action);
-
-    @DELETE("episode/delete/{episodeId}")
-    Call<JsonObject> deleteEpisode(@Path("episodeId") int episodeId);
-
-
-    @GET("materi/showAllMateriByEpisodeId/{episodeId}")
-    Call<JsonObject> showAllMateriByEpisodeId(@Path("episodeId") int episodeId) ;
-
-    @Multipart
-    @POST("materi/post")
-    Call<JsonObject> postMateri(
-            @Part("episode_id") int episode,
-            @Part("materi_picture") RequestBody name,
-            @Part MultipartBody.Part file);
-
-
-
 
 }
