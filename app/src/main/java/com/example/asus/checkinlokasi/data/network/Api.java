@@ -24,9 +24,14 @@ public interface Api {
     @GET("episode/showallepisode")
     Call<JsonObject> showAllEpisode() ;
 
-    @POST("episode/post")
+    @POST("service/location.php")
     @FormUrlEncoded
-    Call<JsonObject> postEpisode(@Field("episode_name") String episodeName);
+    Call<JsonObject> postLocation(@Field("episode_name") String episodeName,
+                                  @Field("keterangan") String note,
+                                  @Field("kontributor")  String contributor,
+                                  @Field("longitude") String longitude,
+                                  @Field("latitude") String latitude,
+                                  @Field("aksi") String action);
 
     @DELETE("episode/delete/{episodeId}")
     Call<JsonObject> deleteEpisode(@Path("episodeId") int episodeId);

@@ -21,9 +21,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.asus.checkinlokasi.R;
+import com.example.asus.checkinlokasi.presenter.AddLocationPresenter;
 import com.example.asus.checkinlokasi.presenter.LocationPresenter;
 import com.example.asus.checkinlokasi.receiver.LocationReceiver;
 import com.example.asus.checkinlokasi.service.LocationService;
+import com.example.asus.checkinlokasi.util.ShowAlert;
 
 import java.util.Timer;
 
@@ -31,7 +33,7 @@ import java.util.Timer;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddLocationFragment extends Fragment implements LocationView, View.OnClickListener, LocationReceiver.PeriodicCheckLocation  {
+public class AddLocationFragment extends Fragment implements LocationView, View.OnClickListener, LocationReceiver.PeriodicCheckLocation, AddLocationView {
 
     private EditText etLocationName, etNote, etKontributor;
     private Button btnSave, btnSetLocation;
@@ -40,7 +42,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     private AlertDialog alert;
     private AlertDialog.Builder builder;
     private Intent intent;
-    private Timer timer;
+    private AddLocationPresenter addLocationPresenter;
 
     private LocationReceiver mBroadcast;
     public AddLocationFragment() {
@@ -79,7 +81,6 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
         if (intent != null){
             getActivity().stopService(intent);
         }
-        timer.cancel();
 
     }
 
@@ -119,6 +120,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     private void initPresenter() {
         locationPresenter = new LocationPresenter(getActivity(), this);
         locationPresenter.getLocation();
+        addLocationPresenter = new AddLocationPresenter(this);
     }
 
     @Override
@@ -177,7 +179,10 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
                 etKontributor.setError(getString(R.string.text_cannot_empty));
                 etKontributor.requestFocus();
             }else {
-
+                if(ShowAlert.dialog != null){
+                    ShowAlert.closeProgresDialog();
+                }
+                ShowAlert.showProgresDialog(getActivity());
             }
         }
     }
@@ -190,4 +195,15 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
 
     }
 
+    @Override
+    public void onSuccessPostLocation(String g) {
+
+    }
+
+    @Override
+    public void onFailedPostLocation(String t) {
+
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showToast(getActivity(), t);
+    }
 }
