@@ -1,4 +1,4 @@
-package com.example.asus.checkinlokasi.data.network;
+package com.example.asus.checkinlokasi.data.network.network;
 
 
 import com.example.asus.checkinlokasi.util.Constant;

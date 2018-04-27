@@ -1,4 +1,4 @@
-package com.example.asus.checkinlokasi.data.network;
+package com.example.asus.checkinlokasi.data.network.network;
 
 import com.google.gson.JsonObject;
 
@@ -21,13 +21,16 @@ import retrofit2.http.Path;
 public interface Api {
 
 
-    @POST("service/location.php")
+    @POST("service/lokasi.php")
     @FormUrlEncoded
-    Call<JsonObject> postLocation(@Field("episode_name") String episodeName,
+    Call<JsonObject> postLocation(@Field("nama") String locationName,
                                   @Field("keterangan") String note,
                                   @Field("kontributor")  String contributor,
-                                  @Field("longitude") String longitude,
-                                  @Field("latitude") String latitude,
+                                  @Field("lon") String longitude,
+                                  @Field("lat") String latitude,
                                   @Field("aksi") String action);
+
+    @GET("service/lokasi.php")
+    Call<JsonObject> showAllLocation();
 
 }

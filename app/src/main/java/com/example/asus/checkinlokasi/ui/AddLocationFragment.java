@@ -1,7 +1,6 @@
 package com.example.asus.checkinlokasi.ui;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -11,9 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,12 +22,9 @@ import android.widget.TextView;
 import com.example.asus.checkinlokasi.R;
 import com.example.asus.checkinlokasi.presenter.AddLocationPresenter;
 import com.example.asus.checkinlokasi.presenter.LocationPresenter;
-import com.example.asus.checkinlokasi.receiver.GPSReceiver;
 import com.example.asus.checkinlokasi.receiver.LocationReceiver;
 import com.example.asus.checkinlokasi.service.LocationService;
 import com.example.asus.checkinlokasi.util.ShowAlert;
-
-import java.util.Timer;
 
 
 /**
@@ -40,13 +36,11 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     private Button btnSave, btnSetLocation;
     private TextView tvLongitudeLatitude;
     private LocationPresenter locationPresenter;
-    private AlertDialog alert;
-    private AlertDialog.Builder builder;
     private Intent intent;
     private AddLocationPresenter addLocationPresenter;
+    private String longitude, latitude;
 
     private LocationReceiver mBroadcast;
-    private GPSReceiver gpsReceiver;
     public AddLocationFragment() {
         // Required empty public constructor
     }
@@ -57,6 +51,10 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_location, container, false);
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Simpan Lokasi");
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+        setHasOptionsMenu(true);
         etLocationName = view.findViewById(R.id.et_location_name);
         etNote = view.findViewById(R.id.et_note);
         etKontributor = view.findViewById(R.id.et_kontributor);
@@ -92,10 +90,6 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
         filter.addAction(LocationReceiver.TAG);
         getActivity().registerReceiver(mBroadcast, filter);
 
-        gpsReceiver = new GPSReceiver(this);
-        IntentFilter filter1 = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        filter.addAction(GPSReceiver.TAG);
-        getActivity().registerReceiver(gpsReceiver, filter1);
     }
 
     private void unregisterReceiver() {
@@ -132,11 +126,16 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
 
     @Override
     public void onSuccessGetLocation(Location addresses) {
-        if(locationPresenter == null){
-            locationPresenter = new LocationPresenter(getActivity(), this);
-            locationPresenter.getLocation();
-        };
-        tvLongitudeLatitude.setText(Double.toString(addresses.getLongitude()) +", "+ Double.toString(addresses.getLatitude()) );
+        if(addresses != null){
+            if(locationPresenter == null){
+                locationPresenter = new LocationPresenter(getActivity(), this);
+                locationPresenter.getLocation();
+            };
+            latitude = Double.toString(addresses.getLatitude());
+            longitude = Double.toString(addresses.getLongitude());
+            tvLongitudeLatitude.setText(Double.toString(addresses.getLongitude()) +", "+ Double.toString(addresses.getLatitude()) );
+        }
+
     }
 
     @Override
@@ -173,6 +172,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
                     ShowAlert.closeProgresDialog();
                 }
                 ShowAlert.showProgresDialog(getActivity());
+                addLocationPresenter.postLocation(locationName, note, contributor, longitude, latitude, "simpan" );
             }
         }
     }
@@ -180,6 +180,9 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     @Override
     public void handleFromReceiver(String location) {
         if(location != null){
+            String[] locationParse = location.split(", ");
+            latitude = locationParse[1];
+            longitude = locationParse[0];
             tvLongitudeLatitude.setText(location);
         }
 
@@ -187,7 +190,8 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
 
     @Override
     public void onSuccessPostLocation(String g) {
-
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showToast(getActivity(), g);
     }
 
     @Override
@@ -195,5 +199,15 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
 
         ShowAlert.closeProgresDialog();
         ShowAlert.showToast(getActivity(), t);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            ((MainActivity)getActivity()).getSupportActionBar().setTitle("Daftar Lokasi");
+            ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getFragmentManager().popBackStack();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

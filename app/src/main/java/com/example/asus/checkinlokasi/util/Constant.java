@@ -5,5 +5,5 @@ package com.example.asus.checkinlokasi.util;
  */
 
 public class Constant {
-    public static String BASE_URL = "http://bikubiku.kampusgo.xyz/v2/";
+    public static String BASE_URL = "http://wp.garasitekno.com/";
 }

@@ -37,10 +37,17 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 replace(R.id.frame_container,
-                        new AddLocationFragment(),
-                        AddLocationFragment.class.getSimpleName()).commit();
+                        new ListLocationFragment(),
+                        ListLocationFragment.class.getSimpleName()).commit();
         setContentView(R.layout.activity_main);
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        getSupportActionBar().setTitle("Daftar Lokasi");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onBackPressed();
+    }
 }

@@ -36,7 +36,8 @@ public class LocationService extends Service {
                 Log.d("run", "run location");
                 Intent i = new Intent("location");
                 i.setAction(LocationReceiver.TAG);
-                i.putExtra("location", location.getLongitude() + " " + location.getLatitude());
+                i.putExtra("location", location.getLongitude() + ", "+ location.getLatitude());
+
                 sendBroadcast(i);
             }
 

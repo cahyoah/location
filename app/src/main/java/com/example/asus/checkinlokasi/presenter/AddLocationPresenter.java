@@ -1,15 +1,12 @@
 package com.example.asus.checkinlokasi.presenter;
 
-import com.example.asus.checkinlokasi.data.network.RetrofitClient;
+import com.example.asus.checkinlokasi.data.network.network.RetrofitClient;
 import com.example.asus.checkinlokasi.ui.AddLocationView;
-import com.example.asus.checkinlokasi.ui.LocationView;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Field;
 
 public class AddLocationPresenter {
 
@@ -38,9 +35,17 @@ public class AddLocationPresenter {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
-                            addLocationView.onSuccessPostLocation("g");
+                            JsonObject jsonObject = response.body();
+                            String status = jsonObject.get("status").getAsString();
+                            String message = jsonObject.get("message").getAsString();
+                            if(status.equals("success")){
+                                addLocationView.onSuccessPostLocation(message);
+                            }else{
+                                addLocationView.onFailedPostLocation(message);
+                            }
+
                         }else {
-                            addLocationView.onFailedPostLocation("t");
+                            addLocationView.onFailedPostLocation("Penyimpanan Gagal");
                         }
                     }
 
