@@ -141,6 +141,8 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     @Override
     public void onDisabledGPS(String please_enable_gps_and_internet) {
        tvLongitudeLatitude.setText(please_enable_gps_and_internet +" Tidak Aktif");
+       latitude = null;
+       longitude = null;
     }
 
     @Override
