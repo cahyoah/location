@@ -175,6 +175,7 @@ public class LocationPresenter implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
+        locationView.onProviderEnabled();
     }
 
     @Override

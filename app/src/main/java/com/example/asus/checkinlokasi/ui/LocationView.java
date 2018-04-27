@@ -6,4 +6,6 @@ public interface LocationView {
     void onSuccessGetLocation(Location addresses);
 
     void onDisabledGPS(String please_enable_gps_and_internet);
+
+    void onProviderEnabled();
 }

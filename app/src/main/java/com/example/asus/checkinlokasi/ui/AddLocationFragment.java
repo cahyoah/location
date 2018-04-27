@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.asus.checkinlokasi.R;
 import com.example.asus.checkinlokasi.presenter.AddLocationPresenter;
 import com.example.asus.checkinlokasi.presenter.LocationPresenter;
+import com.example.asus.checkinlokasi.receiver.GPSReceiver;
 import com.example.asus.checkinlokasi.receiver.LocationReceiver;
 import com.example.asus.checkinlokasi.service.LocationService;
 import com.example.asus.checkinlokasi.util.ShowAlert;
@@ -45,6 +46,7 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
     private AddLocationPresenter addLocationPresenter;
 
     private LocationReceiver mBroadcast;
+    private GPSReceiver gpsReceiver;
     public AddLocationFragment() {
         // Required empty public constructor
     }
@@ -89,6 +91,11 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction(LocationReceiver.TAG);
         getActivity().registerReceiver(mBroadcast, filter);
+
+        gpsReceiver = new GPSReceiver(this);
+        IntentFilter filter1 = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(GPSReceiver.TAG);
+        getActivity().registerReceiver(gpsReceiver, filter1);
     }
 
     private void unregisterReceiver() {
@@ -134,29 +141,12 @@ public class AddLocationFragment extends Fragment implements LocationView, View.
 
     @Override
     public void onDisabledGPS(String please_enable_gps_and_internet) {
-        builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setMessage("Terjadi kesalahan. Apakah anda ingin mengulang?");
-        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-//                if(ShowAlert.dialog != null && ShowAlert.dialog.isShowing()){
-//                    ShowAlert.closeProgresDialog();
-//                }
-//                ShowAlert.showProgresDialog(TesMinatActivity.this);
-//                tesMinatPresenter.showTesMinatQuestion();
-            }
-        });
+       tvLongitudeLatitude.setText(please_enable_gps_and_internet +" Tidak Aktif");
+    }
 
-        builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        alert = builder.create();
-        alert.show();
+    @Override
+    public void onProviderEnabled() {
+        locationPresenter.getLocation();
     }
 
 
